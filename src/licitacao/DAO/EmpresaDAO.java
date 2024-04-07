@@ -47,6 +47,82 @@ public class EmpresaDAO {
             }
         }
     }
+    
+    public void update(Empresa empresa) {
+    	
+    	String sql = "UPDATE empresa set CNPJ = ?, nomePJ = ?, nome = ?, email = ? " +
+    	"WHERE IdEmpr = ?";
+    	
+    	Connection conn = null;
+    	PreparedStatement pstm = null;
+    	
+    	try {
+    		conn = ConnectionFactory.createConnectionToMySQL();
+    		
+    		pstm = (PreparedStatement) conn.prepareStatement(sql);
+
+    		pstm.setInt(1, empresa.getCNPJ());
+    		pstm.setInt(2, empresa.getNomePJ());
+    		pstm.setString(3, empresa.getNome());
+    		pstm.setString(4, empresa.getEmail());
+    		
+    		pstm.setInt(5, empresa.getIdEmpr());
+    		
+    		pstm.execute();
+    		
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    	}finally {
+    		
+    		 try {
+                 if (pstm != null) {
+                     pstm.close();
+                 }
+
+                 if (conn != null) {
+                     conn.close();
+                 }
+             } catch (Exception e) {
+                 e.printStackTrace();
+             }
+    	}
+    }
+    
+    public void deleteById(int IdEmpr) {
+    	
+    	String sql = "DELETE FROM empresa WHERE IdEmpr = ?";
+    	
+    	Connection conn = null;
+    	
+    	PreparedStatement pstm = null;
+    	
+    	try {
+    		conn = ConnectionFactory.createConnectionToMySQL();
+    		
+    		pstm = (PreparedStatement) conn.prepareStatement(sql);
+    		
+    		pstm.setInt(1, IdEmpr);
+    		
+    		pstm.execute();
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    	}finally {
+    		
+    		 try {
+                 if (pstm != null) {
+                     pstm.close();
+                 }
+
+                 if (conn != null) {
+                     conn.close();
+                 }
+             } catch (Exception e) {
+                 e.printStackTrace();
+                 
+    		 }
+    	}
+    }
+    
 
 
     public List<Empresa> getEmpresas() {
